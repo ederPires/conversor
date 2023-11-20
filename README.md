@@ -22,4 +22,6 @@ Npx react-native run-android
 //Instalar dependências
 npm install @react-native-picker/picker --save
 
+npm install axios
+
 ```

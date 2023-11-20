@@ -1,17 +1,59 @@
-import React from 'react'
-import { Text, StyleSheet, View } from 'react-native'
+//Hooks
+import React, {useState, useEffect} from 'react'
+import { Text, StyleSheet, View, ActivityIndicator } from 'react-native'
 import {PickerItem} from './src/Picker';
+import {api} from './src/services/api';
+
 //import PickerItem from './src/Picker'; com export defalt pega direto sem chaves
 
 export default function App() {
-    return (
-      <View style={styles.container}>
-        <View style={styles.areaMoeda}>
-          <Text style={styles.titulo}>Selecione sua moeda</Text>
-          <PickerItem />
+  const [moedas, setMoedas] = useState([])
+  const [loading, setLoading] = useState(true)
+
+  //Quando monta o componente chama o useEffect
+  useEffect(() => {
+    async function loadMoedas(){
+      //busca no site da api
+      const response = await api.get("all")
+      let arrayMoedas = [];
+      //pega um objeto e não array
+      //percorre o objeto e coloca no array
+      Object.keys(response.data).map( (key) => {
+        arrayMoedas.push({
+          key: key,
+          label: key,
+          value: key,
+        })
+      } )
+
+      setMoedas(arrayMoedas)
+      setLoading(false) //se der tudo certo loading será falso
+      
+      //console.log(response.data);
+      //console.log("==================>")
+      //console.log(arrayMoedas);
+    }
+
+    loadMoedas();
+  }, [])
+
+    if(loading){
+      return(
+        <View style={{ flex:1, justifyContent: "center", alignItems: "center", backgroundColor: "#101215" } } >
+          <ActivityIndicator size="large" color="#FFF"/>
         </View>
-      </View>
-    )
+      )
+    } else{
+      return (
+        <View style={styles.container}>
+          <View style={styles.areaMoeda}>
+            <Text style={styles.titulo}>Selecione sua moeda</Text>
+            <PickerItem />
+          </View>
+        </View>
+      )
+    }
+
 }
 
 const styles = StyleSheet.create({
