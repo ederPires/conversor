@@ -53,7 +53,7 @@ export default function App() {
 
     console.log(response.data[moedaSelecionada].ask);
 
-    //pega o valor digitado e multiplica pelo valor da moeda selecionada
+    //pega o valor digitado e multiplica pelo valor da moeda selecionada, consome da api
     let resultado = (response.data[moedaSelecionada].ask * parseFloat(moedaBValor))
 
     //resultado final
@@ -81,7 +81,7 @@ export default function App() {
           <View style={styles.areaMoeda}>
             <Text style={styles.titulo}>Selecione sua moeda</Text>
             <PickerItem
-              moedas={moedas}
+              moedas={moedas} //seta valor de moedaSelecionada
               moedaSelecionada={moedaSelecionada}
               onChange={ (moeda) => {
                 setMoedaSelecionada(moeda)
